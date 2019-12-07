@@ -146,7 +146,7 @@ const compile = (instructions, input$) => {
           currentIndex += 4;
           break;
         case 3:
-          instructions[a] = await getInput();
+          // instructions[a] = getInput();
           currentIndex += 2;
           break;
         case 4:
