@@ -1,6 +1,7 @@
-const { run, parseFile } = require("./program");
+const { compile, parseFile } = require("./program");
+const { ReplaySubject } = require("rxjs");
 
-const program = parseFile("d7.txt");
+const instructions = parseFile("d7.txt");
 
 let a = 0,
   b = 0,
@@ -52,13 +53,34 @@ const moveNextInput = () => {
 let max = 0;
 moveNextInput();
 
-const amp = (phase, input) => run(program, [phase, input]);
-
 while (a <= 4) {
-  const result = amp(e, amp(d, amp(c, amp(b, amp(a, 0)))));
-  max = max > result ? max : result;
+  const iA = new ReplaySubject();
+  iA.next(a);
+  const pA = compile(instructions, iA);
+
+  const iB = new ReplaySubject();
+  iB.next(b);
+  const pB = compile(instructions, iB);
+
+  const iC = new ReplaySubject();
+  iC.next(c);
+  const pC = compile(instructions, iC);
+
+  const iD = new ReplaySubject();
+  iD.next(d);
+  const pD = compile(instructions, iD);
+
+  const iE = new ReplaySubject();
+  iE.next(e);
+  const pE = compile(instructions, iE);
+
+  iA.next(0);
+  pA.subscribe(o => iB.next(o));
+  pB.subscribe(o => iC.next(o));
+  pC.subscribe(o => iD.next(o));
+  pD.subscribe(o => iE.next(o));
+  pE.subscribe(o => (max = max > o ? max : o));
 
   moveNextInput();
 }
-
-console.log(max);
+setTimeout(() => console.log(max));
