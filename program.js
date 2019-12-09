@@ -14,7 +14,19 @@ const parseOpcode = instruction => {
   parameterModes = s
     .substr(0, s.length - 2)
     .split("")
-    .map(c => (c === "0" ? "ref" : "value"))
+    .map(c => {
+      switch (c) {
+        case "0":
+          return "ref";
+        case "1":
+          return "value";
+        case "2":
+          return "relative";
+
+        default:
+          throw "unknown param mode: " + c;
+      }
+    })
     .reverse();
 
   while (parameterModes.length < 3) {
@@ -27,17 +39,24 @@ const parseOpcode = instruction => {
   };
 };
 
-const getParam = (instructions, mode, currentIndex) => {
-  if (currentIndex >= instructions.length) {
-    return undefined;
-  }
+const getParam = (instructions, mode, currentIndex, relativeBase) => {
+  switch (mode) {
+    case "value":
+      return currentIndex;
+    case "ref":
+      return instructions[currentIndex];
+    case "relative":
+      return relativeBase + instructions[currentIndex];
 
-  return mode === "value" ? currentIndex : instructions[currentIndex];
+    default:
+      throw "Unknown param mode: " + mode;
+  }
 };
 
 async function run(instructions, input, output) {
   let currentIndex = 0;
-  instructions = [...instructions];
+  let relativeBase = 0;
+  instructions = instructions.map(i => +i);
 
   let opcode = parseOpcode(instructions[0]);
 
@@ -45,25 +64,28 @@ async function run(instructions, input, output) {
     const a = getParam(
       instructions,
       opcode.parameterModes[0],
-      currentIndex + 1
+      currentIndex + 1,
+      relativeBase
     );
     const b = getParam(
       instructions,
       opcode.parameterModes[1],
-      currentIndex + 2
+      currentIndex + 2,
+      relativeBase
     );
     const c = getParam(
       instructions,
       opcode.parameterModes[2],
-      currentIndex + 3
+      currentIndex + 3,
+      relativeBase
     );
     switch (opcode.code) {
       case 1:
-        instructions[c] = instructions[a] + instructions[b];
+        instructions[c] = (instructions[a] || 0) + (instructions[b] || 0);
         currentIndex += 4;
         break;
       case 2:
-        instructions[c] = instructions[a] * instructions[b];
+        instructions[c] = (instructions[a] || 0) * (instructions[b] || 0);
         currentIndex += 4;
         break;
       case 3:
@@ -71,30 +93,36 @@ async function run(instructions, input, output) {
         currentIndex += 2;
         break;
       case 4:
-        output(instructions[a]);
+        output(instructions[a] || 0);
         currentIndex += 2;
         break;
       case 5:
-        if (instructions[a] !== 0) {
-          currentIndex = instructions[b];
+        if ((instructions[a] || 0) !== 0) {
+          currentIndex = instructions[b] || 0;
         } else {
           currentIndex += 3;
         }
         break;
       case 6:
-        if (instructions[a] === 0) {
-          currentIndex = instructions[b];
+        if ((instructions[a] || 0) === 0) {
+          currentIndex = instructions[b] || 0;
         } else {
           currentIndex += 3;
         }
         break;
       case 7:
-        instructions[c] = instructions[a] < instructions[b] ? 1 : 0;
+        instructions[c] =
+          (instructions[a] || 0) < (instructions[b] || 0) ? 1 : 0;
         currentIndex += 4;
         break;
       case 8:
-        instructions[c] = instructions[a] === instructions[b] ? 1 : 0;
+        instructions[c] =
+          (instructions[a] || 0) === (instructions[b] || 0) ? 1 : 0;
         currentIndex += 4;
+        break;
+      case 9:
+        relativeBase += instructions[a] || 0;
+        currentIndex += 2;
         break;
 
       default:
