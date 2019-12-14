@@ -1,11 +1,9 @@
-const fs = require("fs");
-
-const run = (instructions, n, v) => {
+module.exports = function(instructions, noun, verb) {
   let currentIndex = 0;
   // Don't mutate the input
   instructions = [...instructions];
-  instructions[1] = n;
-  instructions[2] = v;
+  instructions[1] = noun;
+  instructions[2] = verb;
 
   while (instructions[currentIndex] !== 99) {
     const a = instructions[currentIndex + 1];
@@ -25,32 +23,3 @@ const run = (instructions, n, v) => {
   }
   return instructions[0];
 };
-
-const program = fs
-  .readFileSync("d2.txt", { encoding: "UTF8" })
-  .split(/,/g)
-  .map(x => +x);
-
-console.log("Part 1: Value at 0 index:", run(program, 12, 2));
-
-const target = 19690720;
-let noun = 0;
-let verb = 0;
-let output = run(program, noun, verb);
-
-while (output <= target) {
-  noun += 1;
-  output = run(program, noun, verb);
-}
-noun -= 1;
-
-while (output !== target) {
-  verb += 1;
-  output = run(program, noun, verb);
-}
-
-console.log("Part 2:", 100 * noun + verb);
-
-// while(output !== 19690720) {
-//   if (output)
-// }
