@@ -132,7 +132,8 @@ async function run(instructions, input, output) {
   }
 }
 
-const compile = (instructions, input$) => {
+const compile = (instructions, input$, awaitingInput = () => {}) => {
+  instructions = [...instructions];
   let inputQueue = [];
   const nextInputSubject = new Subject();
   const inputSub = input$.subscribe(i => {
@@ -145,6 +146,7 @@ const compile = (instructions, input$) => {
         const [i] = inputQueue.splice(0, 1);
         return of(i).toPromise();
       } else {
+        awaitingInput();
         return nextInputSubject
           .pipe(
             take(1),
