@@ -1,8 +1,9 @@
 const fs = require("fs");
-const { parseReactions, getOreRequirement } = require("./q14");
+const parseReactions = require("./parse-reactions");
+const getOreRequirement = require("./get-ore-requirement");
 
 const fileReactions = parseReactions(
-  fs.readFileSync("d14.txt", { encoding: "utf8" })
+  fs.readFileSync("day-14/input.txt", { encoding: "utf8" })
 );
 
 const oreCosts = {

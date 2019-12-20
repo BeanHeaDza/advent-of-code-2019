@@ -1,4 +1,5 @@
-const { getOreRequirement, parseReactions } = require("./q14");
+const getOreRequirement = require("./get-ore-requirement");
+const parseReactions = require("./parse-reactions");
 
 describe("getOreRequirement", () => {
   it("#1", () => {
