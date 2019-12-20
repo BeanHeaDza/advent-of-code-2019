@@ -1,4 +1,5 @@
 const fs = require("fs");
+const compile = require("./compile");
 
 const parseContent = content => content.split(/,/g).map(x => +x);
 const parseFile = path =>
@@ -6,5 +7,6 @@ const parseFile = path =>
 
 module.exports = {
   parseContent,
-  parseFile
+  parseFile,
+  compile
 };

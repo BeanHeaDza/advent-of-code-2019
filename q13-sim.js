@@ -1,5 +1,5 @@
-const { compile, parseFile } = require("./program");
-const { Observable, Subject, from } = require("rxjs");
+const { compile, parseFile } = require("./int-code");
+const { Observable, Subject } = require("rxjs");
 const { bufferCount } = require("rxjs/operators");
 const _ = require("lodash");
 const clear = require("clear");

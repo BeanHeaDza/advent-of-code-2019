@@ -1,4 +1,4 @@
-const { compile, parseFile } = require("./program");
+const { compile, parseFile } = require("./int-code");
 const { ReplaySubject } = require("rxjs");
 
 const instructions = parseFile("d7.txt");

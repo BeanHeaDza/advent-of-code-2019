@@ -1,6 +1,5 @@
 const { from } = require("rxjs");
-const { parseFile } = require("../int-code");
-const { compile } = require("../program");
+const { parseFile, compile } = require("../int-code");
 
 const instructions = parseFile("day-19/input.txt");
 // Skip the first 50 lines, see the input of part 1 to see why
@@ -54,15 +53,17 @@ function scan() {
       throw e;
     },
     () => {
-      if (currentLine.endDone && currentLine.startDone) {
-        if (solved()) {
-          return;
+      process.nextTick(() => {
+        if (currentLine.endDone && currentLine.startDone) {
+          if (solved()) {
+            return;
+          }
+          const nextLine = { ...currentLine, startDone: false, endDone: false };
+          map.push(nextLine);
+          currentLine = nextLine;
         }
-        const nextLine = { ...currentLine, startDone: false, endDone: false };
-        map.push(nextLine);
-        currentLine = nextLine;
-      }
-      scan();
+        scan();
+      });
     }
   );
 }

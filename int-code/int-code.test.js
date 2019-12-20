@@ -1,4 +1,4 @@
-const { compile } = require("./program");
+const { compile } = require(".");
 const { Subject, ReplaySubject } = require("rxjs");
 
 describe("compile", () => {

@@ -30,7 +30,7 @@ const awaitingInput = () => {
       input.next(lastDirection);
     } else {
       console.log(
-        "Part1: ",
+        "Part1:",
         getPath(map, { x: 0, y: 0 }, oxygenLocation, impassableTiles).length
       );
 
@@ -71,27 +71,32 @@ const paintBlock = (map, loc, c) => {
 const pgm = compile(instructions, input, awaitingInput);
 paintBlock(map, { x: 0, y: 0 }, ".");
 
-subscription = pgm.subscribe(output => {
-  const targetBlock = newLocation(location, lastDirection);
-  if (targetBlock.x == target.x && targetBlock.y == target.y) {
-    target = null;
-  }
-  switch (+output) {
-    case 0:
-      paintBlock(map, targetBlock, "#");
+subscription = pgm.subscribe(
+  output => {
+    const targetBlock = newLocation(location, lastDirection);
+    if (targetBlock.x == target.x && targetBlock.y == target.y) {
       target = null;
-      break;
-    case 1:
-      paintBlock(map, targetBlock, ".");
-      location = targetBlock;
-      break;
-    case 2:
-      paintBlock(map, targetBlock, "O");
-      location = targetBlock;
-      oxygenLocation = { ...targetBlock };
-      break;
+    }
+    switch (+output) {
+      case 0:
+        paintBlock(map, targetBlock, "#");
+        target = null;
+        break;
+      case 1:
+        paintBlock(map, targetBlock, ".");
+        location = targetBlock;
+        break;
+      case 2:
+        paintBlock(map, targetBlock, "O");
+        location = targetBlock;
+        oxygenLocation = { ...targetBlock };
+        break;
 
-    default:
-      throw "Unknown bot response: " + output;
+      default:
+        throw "Unknown bot response: " + output;
+    }
+  },
+  e => {
+    throw e;
   }
-});
+);

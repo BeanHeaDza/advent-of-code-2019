@@ -1,6 +1,5 @@
 const { from } = require("rxjs");
-const { parseFile } = require("../int-code");
-const { compile } = require("../program");
+const { parseFile, compile } = require("../int-code");
 
 const instructions = parseFile("day-19/input.txt");
 
@@ -20,18 +19,20 @@ function scan() {
       throw e;
     },
     () => {
-      x++;
-      if (x == 50) {
-        console.log(print);
-        print = "";
-        x = 0;
-        y++;
-      }
-      if (y == 50) {
-        console.log("Part1:", result);
-      } else {
-        scan();
-      }
+      process.nextTick(() => {
+        x++;
+        if (x == 50) {
+          console.log(print);
+          print = "";
+          x = 0;
+          y++;
+        }
+        if (y == 50) {
+          console.log("Part1:", result);
+        } else {
+          scan();
+        }
+      });
     }
   );
 }

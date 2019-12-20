@@ -1,5 +1,4 @@
-const { compile } = require("../program");
-const { parseFile } = require("../int-code");
+const { parseFile, compile } = require("../int-code");
 const { EMPTY } = require("rxjs");
 
 const instructions = parseFile("day-17/input.txt");
@@ -18,7 +17,9 @@ function isCrossing(x, y, map) {
 let mapString = "";
 pgm.subscribe(
   output => (mapString += String.fromCharCode(output)),
-  () => {},
+  e => {
+    throw e;
+  },
   () => {
     const map = mapString.split("\n").map(line => line.split(""));
     let sum = 0;

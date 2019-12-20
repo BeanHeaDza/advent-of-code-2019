@@ -1,4 +1,4 @@
-const { compile } = require("./program");
+const { compile } = require("./int-code");
 const { EMPTY } = require("rxjs");
 
 describe("d9", () => {

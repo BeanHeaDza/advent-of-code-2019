@@ -1,4 +1,4 @@
-const { compile, parseFile } = require("./program");
+const { compile, parseFile } = require("./int-code");
 const { Subject } = require("rxjs");
 const { bufferCount } = require("rxjs/operators");
 
@@ -38,8 +38,6 @@ const moveOnce = () => {
       throw "Unexpected angle: " + angle;
   }
 };
-
-input$.next(1);
 
 pgm.pipe(bufferCount(2)).subscribe(
   ([color, direction]) => {
@@ -92,3 +90,5 @@ pgm.pipe(bufferCount(2)).subscribe(
     console.log(output);
   }
 );
+
+input$.next(1);

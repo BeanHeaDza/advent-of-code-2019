@@ -1,4 +1,4 @@
-const { compile, parseFile } = require("./program");
+const { compile, parseFile } = require("./int-code");
 const { Subject } = require("rxjs");
 const { bufferCount } = require("rxjs/operators");
 
@@ -39,8 +39,6 @@ const moveOnce = () => {
   }
 };
 
-input$.next(0);
-
 pgm.pipe(bufferCount(2)).subscribe(
   ([color, direction]) => {
     // Paint the panel
@@ -62,3 +60,5 @@ pgm.pipe(bufferCount(2)).subscribe(
     console.log("Part1:", paintedPanels.size);
   }
 );
+
+input$.next(0);

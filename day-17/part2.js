@@ -1,5 +1,4 @@
-const { compile } = require("../program");
-const { parseFile } = require("../int-code");
+const { parseFile, compile } = require("../int-code");
 const { Subject } = require("rxjs");
 
 const instructions = parseFile("day-17/input.txt");

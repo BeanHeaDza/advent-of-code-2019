@@ -1,5 +1,5 @@
-const { compile, parseFile } = require("./program");
-const { Observable, Subject, from } = require("rxjs");
+const { compile, parseFile } = require("./int-code");
+const { Observable, Subject } = require("rxjs");
 const { bufferCount } = require("rxjs/operators");
 const _ = require("lodash");
 const clear = require("clear");
@@ -55,7 +55,7 @@ const run = (known, speed = 0) => {
     const input = new Subject();
     let paddleY, paddleX, lastBallX;
     const waitingForInput = () => {
-      setTimeout(() => {
+      const work = () => {
         if (speed > 0) {
           renderScreen();
         }
@@ -65,7 +65,12 @@ const run = (known, speed = 0) => {
         }
         moves.push(next);
         input.next(next);
-      }, speed);
+      };
+      if (speed) {
+        setTimeout(work, speed);
+      } else {
+        process.nextTick(work);
+      }
     };
     const pgm = compile(instructions, input, waitingForInput);
 
