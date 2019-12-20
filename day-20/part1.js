@@ -1,4 +1,4 @@
-const { readFile, readContent } = require("../common");
+const { readFile } = require("../common");
 const getPortals = require("./get-portals");
 const calculateDistanceMap = require("./calculate-distance-map-with-portals");
 
