@@ -1,4 +1,5 @@
-const { isValid, isValidPart2 } = require("./q4");
+const isValid = require("./is-valid");
+const isValidPart2 = require("./is-valid-part-2");
 
 describe("isValid", () => {
   it("should be valid for 111111", () => {
