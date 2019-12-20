@@ -1,8 +1,6 @@
 const { readFile } = require("../common");
 const getPortals = require("./get-portals");
 const mapFloors = require("./map-floors");
-const clear = require("clear");
-const prettyMilliseconds = require("pretty-ms");
 
 const map = readFile("day-20/input.txt", "map");
 const portals = getPortals(map);
@@ -37,23 +35,8 @@ function move(level, distance, target, floors = []) {
 }
 startingFloor.AA.forEach(target => todo.push(() => move(0, 0, target)));
 
-const start = new Date().getTime();
-let lastTime = new Date().getTime();
-let low, high;
 while (todo.length) {
   todo.pop()();
-  low = !low || todo.length < low ? todo.length : low;
-  high = !high || todo.length > high ? todo.length : high;
-  const now = new Date().getTime();
-  if (now - lastTime > 1000) {
-    lastTime = now;
-    clear();
-    console.log(`run time: ${prettyMilliseconds(now - start)}`);
-    console.log("answer:", answer);
-    console.log(`todo high: ${high}, low: ${low}`);
-    low = high = null;
-  }
 }
 
-clear();
 console.log("Part2:", answer);

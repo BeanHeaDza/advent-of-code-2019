@@ -1,5 +1,4 @@
-const { parseFile } = require("../int-code");
-const { compile } = require("../program");
+const { parseFile, compile } = require("../int-code");
 const { Subject } = require("rxjs");
 const displayMap = require("./display-map");
 const findNextTarget = require("./find-next-target");
@@ -15,7 +14,7 @@ const impassableTiles = new Set();
 const map = [];
 
 const awaitingInput = () => {
-  setTimeout(() => {
+  process.nextTick(() => {
     if (!target) {
       do {
         target = findNextTarget(map, location, impassableTiles);
