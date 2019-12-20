@@ -27,7 +27,7 @@ describe("compile", () => {
     );
   });
 
-  fit("should work with delayed input", () => {
+  it("should work with delayed input", () => {
     const input = new Subject();
     const output = [];
     const d = () => {

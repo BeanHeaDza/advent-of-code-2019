@@ -1,9 +1,7 @@
-const {
-  getAstroidPoints,
-  getPointViews,
-  getMaxViews,
-  getMaxViewsPart2
-} = require("./q10");
+const getAstroidPoints = require("./get-astroid-points");
+const getMaxViews = require("./get-max-views");
+const getMaxViewsPart2 = require("./get-max-views-part-2");
+const getPointViews = require("./get-point-views");
 
 describe("getAstroidPoints", () => {
   it("should parse correctly", () => {
