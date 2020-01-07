@@ -28,7 +28,7 @@
     "22": "node day-22/part1.js && node day-22/part2.js",
     "23": "node day-23/part1.js && node day-23/part2.js",
     "24": "node day-24/part1.js && node day-24/part2.js",
-    "25": "node day-25/part1.js && node day-25/part2.js"
+    "25": "node day-25/part1.js"
   },
   "keywords": [],
   "author": "",
